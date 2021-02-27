@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FixProject.Server": {
+      "commandName": "Project",
+      "commandLineArgs": ".\\conf\\server.cfg"
+    }
+  }
+}
