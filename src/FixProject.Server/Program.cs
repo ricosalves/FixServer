@@ -30,9 +30,6 @@ namespace FixProject.Server
 
                 switch (comando)
                 {
-                    case "enviar":
-                        EnviarMensagensPorArquivo();
-                        break;
 
                     default:
                         break;
@@ -41,19 +38,6 @@ namespace FixProject.Server
                 System.Threading.Thread.Sleep(1000);
             }
             acceptor.Stop();
-        }
-
-        private static void EnviarMensagensPorArquivo()
-        {
-            Console.WriteLine("Favor informar o caminho do arquivo");
-            var caminho = Console.ReadLine();
-
-            var arquivoTexto = File.ReadAllText(caminho);
-
-            foreach (var linha in arquivoTexto)
-            {
-                myApp.EnviarParaTodos(linha);
-            }
         }
     }
 }

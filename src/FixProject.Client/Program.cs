@@ -7,10 +7,12 @@ namespace FixProject.Client
 {
     class Program
     {
+        static MyQuickFixApp myApp;
+
         static void Main(string[] args)
         {
             SessionSettings settings = new SessionSettings(args[0]);
-            IApplication myApp = new MyQuickFixApp();
+            myApp = new MyQuickFixApp();
             IMessageStoreFactory storeFactory = new FileStoreFactory(settings);
             ILogFactory logFactory = new FileLogFactory(settings);
             SocketInitiator initiator = new SocketInitiator(
@@ -24,8 +26,11 @@ namespace FixProject.Client
             {
                 string comando = Console.ReadLine();
 
-                switch (comando)
+                switch (comando.ToLower())
                 {
+                    case "neworder":
+                        myApp.SendNewOrder("Client", "Server");
+                        break;
                     default:
                         break;
                 }
