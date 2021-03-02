@@ -12,7 +12,7 @@ namespace FixProject.Client
         static void Main(string[] args)
         {
             SessionSettings settings = new SessionSettings(args[0]);
-            myApp = new MyQuickFixApp();
+            myApp = new MyQuickFixApp(settings);
             IMessageStoreFactory storeFactory = new FileStoreFactory(settings);
             ILogFactory logFactory = new FileLogFactory(settings);
             SocketInitiator initiator = new SocketInitiator(

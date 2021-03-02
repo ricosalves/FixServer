@@ -13,7 +13,7 @@ namespace FixProject.Server
         {
             SessionSettings settings = new SessionSettings(args[0]);
 
-            myApp = new MyQuickFixApp();
+            myApp = new MyQuickFixApp(settings);
             IMessageStoreFactory storeFactory = new FileStoreFactory(settings);
             ILogFactory logFactory = new FileLogFactory(settings);
             ThreadedSocketAcceptor acceptor = new ThreadedSocketAcceptor(
