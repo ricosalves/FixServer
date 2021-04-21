@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using QuickFix;
 using QuickFix.Fields;
 
@@ -18,17 +19,18 @@ namespace Application
             Console.WriteLine($"Session: {sessionID} - {msg.ToString()}");
         }
 
-        public void OnMessage(QuickFix.FIX44.Heartbeat msg, SessionID sessionID)
-        {
-            Console.WriteLine($"Session: {sessionID} - {msg.ToString()}");
-        }
-
         public void FromApp(Message msg, SessionID sessionID)
         {
             Console.WriteLine($"Session: {sessionID} - {msg.ToString()}");
             Crack(msg, sessionID);
         }
-        public void OnCreate(SessionID sessionID) { Console.WriteLine($"Session: {sessionID}"); }
+        public void ToApp(Message msg, SessionID sessionID)
+        {
+            Console.WriteLine(nameof(ToApp));
+            Console.WriteLine($"Session: {sessionID} - {msg.ToString()}");
+            Crack(msg, sessionID);
+        }
+        public void OnCreate(SessionID sessionID) { Console.WriteLine($"Session: {sessionID} - {sessionID.GetHashCode()}"); }
         public void OnLogout(SessionID sessionID) { Console.WriteLine($"Session: {sessionID}"); }
         public void OnLogon(SessionID sessionID) { Console.WriteLine($"Session: {sessionID}"); }
         public void FromAdmin(Message msg, SessionID sessionID)
@@ -41,7 +43,7 @@ namespace Application
                     Session.SendToTarget(new QuickFix.FIX44.Reject() { SessionRejectReason = new SessionRejectReason(99), Text = new Text("Wrong password") }, new SessionID(sessionID.BeginString, sessionID.SenderCompID, sessionID.TargetCompID));
                 }
             }
-            Console.WriteLine($"Session: {sessionID} - {msg.ToString()}");
+            Console.WriteLine($"[{nameof(FromAdmin)}] Session: {sessionID} - {msg.ToString()} - {Thread.CurrentThread.ManagedThreadId}:{Thread.CurrentThread.Name}");
         }
         public void ToAdmin(Message msg, SessionID sessionID)
         {
@@ -54,9 +56,8 @@ namespace Application
                     msg.SetField(new QuickFix.Fields.RawDataLength(rawData.Length));
                 }
             }
-            Console.WriteLine($"Session: {sessionID} - {msg.ToString()}");
+            Console.WriteLine($"[{nameof(ToAdmin)}] Session: {sessionID} - {msg.ToString()}");
         }
-        public void ToApp(Message msg, SessionID sessionID) { Console.WriteLine($"Session: {sessionID} - {msg.ToString()}"); }
 
         public void EnviarParaTodos(string linha)
         {
